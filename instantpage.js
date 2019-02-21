@@ -8,16 +8,18 @@ const prefetcher = document.createElement('link')
 const isSupported = prefetcher.relList && prefetcher.relList.supports && prefetcher.relList.supports('prefetch')
 const allowQueryString = 'instantAllowQueryString' in document.body.dataset
 
-if (isSupported) {
-  prefetcher.rel = 'prefetch'
-  document.head.appendChild(prefetcher)
+function startInstantPage() {
+  if (isSupported) {
+    prefetcher.rel = 'prefetch'
+    document.head.appendChild(prefetcher)
 
-  const eventListenersOptions = {
-    capture: true,
-    passive: true,
+    const eventListenersOptions = {
+      capture: true,
+      passive: true,
+    }
+    document.addEventListener('touchstart', touchstartListener, eventListenersOptions)
+    document.addEventListener('mouseover', mouseoverListener, eventListenersOptions)
   }
-  document.addEventListener('touchstart', touchstartListener, eventListenersOptions)
-  document.addEventListener('mouseover', mouseoverListener, eventListenersOptions)
 }
 
 function touchstartListener(event) {
