@@ -92,21 +92,25 @@ function isPreloadable(linkElement) {
     return
   }
 
-  const urlObject = new URL(linkElement.href)
-
-  if (urlObject.origin != location.origin) {
-    return
-  }
-
-  if (!allowQueryString && urlObject.search && !('instant' in linkElement.dataset)) {
-    return
-  }
-
-  if (urlObject.hash && urlObject.pathname + urlObject.search == location.pathname + location.search) {
-    return
-  }
-
   if ('noInstant' in linkElement.dataset) {
+    return
+  }
+
+  try {
+    const urlObject = new URL(linkElement.href)
+
+    if (urlObject.origin != location.origin) {
+      return
+    }
+
+    if (!allowQueryString && urlObject.search && !('instant' in linkElement.dataset)) {
+      return
+    }
+
+    if (urlObject.hash && urlObject.pathname + urlObject.search == location.pathname + location.search) {
+      return
+    }
+  } catch {
     return
   }
 
@@ -119,6 +123,6 @@ function preload(url) {
 
 function stopPreloading() {
   /* The spec says an empty string should abort the prefetching
-  * but Firefox 64 interprets it as a relative URL to prefetch. */
+   * but Firefox 64 interprets it as a relative URL to prefetch. */
   prefetcher.removeAttribute('href')
 }
